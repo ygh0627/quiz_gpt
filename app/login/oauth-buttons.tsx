@@ -12,18 +12,20 @@ type OAuthProviders = {
 };
 
 const providers: OAuthProviders[] = [
+  /*
   {
     name: 'github',
     displayName: 'GitHub',
     icon: <Github className='size-5' />,
   },
-  /*
+  */
+  
   {
     name: 'google',
     displayName: 'Google',
     icon: <FaGoogle className='size-5' />,
   },
-  */
+  
 ];
 
 export function OAuthButtons() {
