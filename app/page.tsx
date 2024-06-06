@@ -1,7 +1,10 @@
+import Flashcard from '@/components/flashCard'
 import Image from 'next/image'
 
 export default function Home() {
   return (
-    <p className='text-3xl font-bold text-indigo-500'>Team 10 quizGPT</p>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Flashcard front="Front Side" back="Back Side" />
+    </div>
   )
 }
