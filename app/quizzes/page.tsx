@@ -21,6 +21,10 @@ export default async function QuizzesPage() {
       <h1 className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl'>
         Quizzes
       </h1>
+      <div className='text-'></div>
+      <div className='text-sm font-medium text-destructive'>
+        FOR TESTING ONLY - DO NOT PASTE AND SEND ANYTHING UNTIL JSON VALIDATOR IS CREATED
+      </div>
       <QuizForm />
 
       <Separator className='w-full' />

@@ -2,7 +2,7 @@
 type Question = {
   id: string;
   prompt: string;
-  answerChoices?: string[]; // optional because Q might be an frq
+  answerChoices: string[];
   correctAnswer: string; // string or "a" ... or "true"
   explanation: string;
   isComplete: boolean | null;
@@ -15,6 +15,7 @@ type Question = {
 type QuizTest = {
   id: string; // quiz id
   user_id: string; // id of the student in the database
+  name: string; // name of the Quiz
   Questions: string; // thinking about using json.stringify to simplify the db stuff, but it practice it will be an
   //array of Questions with each questions' respective properties - can use json.parse to get the array back
   //created_at: Date // only used in the db so commented out here
@@ -50,26 +51,17 @@ const questions: Question[] = [
     isComplete: false,
     difficulty: 'easy',
     isCorrect: null,
-    hint: 'It is also known as the city of love.'
+    hint: 'It is also known as the city of love.',
   },
   {
     id: '2',
     isCorrect: null,
     prompt: 'The Earth is flat.',
+    answerChoices: ['a) True', 'b) False'],
     correctAnswer: 'false',
     explanation: 'The Earth is an oblate spheroid, not flat.',
     isComplete: false,
     difficulty: 'easy',
-    hint: 'Think about the shape of the planet.'
+    hint: 'Think about the shape of the planet.',
   },
-  {
-    id: '3',
-    isCorrect: null,
-    prompt: 'Explain the theory of relativity.',
-    correctAnswer: 'The theory of relativity, developed by Albert Einstein, includes both the Special Theory of Relativity and the General Theory of Relativity. It describes the laws of physics in the absence of gravity and the gravitational effects caused by the curvature of spacetime.',
-    explanation: 'The theory of relativity is a fundamental theory in physics that describes the relationship between space and time.',
-    isComplete: false,
-    difficulty: 'hard',
-    hint: 'Consider Einstein’s contributions to physics.'
-  }
 ];
