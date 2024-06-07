@@ -19,6 +19,7 @@ export async function addQuiz(formData: FormData) {
 
   const { error } = await supabase.from('quizzes').insert({
     questions: text,
+    name: text,
     user_id: user.id,
   });
 
