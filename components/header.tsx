@@ -8,6 +8,7 @@ export default async function Header() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   return (
     <header className='sticky bg-white top-0 z-10 w-full border-b border-border'>
       <div className='container flex items-center h-14'>
@@ -20,7 +21,7 @@ export default async function Header() {
         <div className='flex flex-1 items-center justify-end space-x-2'>
           {user !== null ? (
             <form action={signout} className='flex items-center m-2'>
-              <p>{user.email}</p>
+              <p>{`Hello, ${user.identities}`}</p>
               <Button>Sign Out</Button>
             </form>
           ) : (

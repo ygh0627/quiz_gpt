@@ -29,7 +29,8 @@ export async function oAuthSignIn(provider: Provider) {
   if (error) {
     return redirect("/login?message=Could not authenticate user");
   }
-
+  console.log(`data`, data);
+  console.log(`redirectUrl`, redirectUrl);
   revalidatePath("/quizzes");
   return redirect(data.url);
 }
