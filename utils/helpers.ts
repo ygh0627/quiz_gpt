@@ -1,4 +1,4 @@
-import { defaultUrl } from "@/app/layout";
+import { defaultUrl } from '@/app/layout';
 
 export const getURL = (path: string = '') => {
   // Check if NEXT_PUBLIC_SITE_URL is set and non-empty. Set this to your site URL in production env.
@@ -11,8 +11,7 @@ export const getURL = (path: string = '') => {
         process.env.NEXT_PUBLIC_VERCEL_URL.trim() !== ''
       ? process.env.NEXT_PUBLIC_VERCEL_URL
       : // If neither is set, default to localhost for local development.
-        //'http://localhost:3000/';
-        defaultUrl;
+        'http://localhost:3000/';
 
   // Trim the URL and remove trailing slash if exists.
   url = url.replace(/\/+$/, '');
