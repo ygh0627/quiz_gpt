@@ -9,7 +9,7 @@ export default async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <header className='sticky top-0 z-10 w-full border-b border-border'>
+    <header className='sticky bg-white top-0 z-10 w-full border-b border-border'>
       <div className='container flex items-center h-14'>
         <nav className='flex items-center space-x-4 lg:space-x-6'>
           <a className='flex items-center space-x-2 mr-6' href='/'>
