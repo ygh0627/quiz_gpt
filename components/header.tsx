@@ -21,7 +21,7 @@ export default async function Header() {
         <div className='flex flex-1 items-center justify-end space-x-2'>
           {user !== null ? (
             <form action={signout} className='flex items-center m-2'>
-              <p>{`Hello, ${user.email}`}</p>
+              <p className='mr-4'>{`Hello, ${user.user_metadata['full_name']}`}</p>
               <Button>Sign Out</Button>
             </form>
           ) : (
