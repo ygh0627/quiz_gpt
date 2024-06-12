@@ -1,15 +1,16 @@
-import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-import Header from "@/components/header";
+import { GeistSans } from 'geist/font/sans';
+import './globals.css';
+import Header from '@/components/header';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : 'http://localhost:3000';
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "QuizGPT",
-  description: "Study",
+  title: 'QuizGPT',
+  description: 'Study',
 };
 
 export default function RootLayout({
@@ -18,11 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="sticky top-0 bg-background text-foreground">
+    <html lang='en' className={GeistSans.className}>
+      <body className='sticky top-0 bg-background text-foreground'>
         <Header />
-        <main>
-          {children}
+        <main className='flex flex-col items-center'>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </main>
       </body>
     </html>

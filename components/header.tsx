@@ -2,6 +2,7 @@ import { signout } from '@/app/login/actions';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 export default async function Header() {
   const supabase = createClient();
@@ -10,7 +11,7 @@ export default async function Header() {
   } = await supabase.auth.getUser();
 
   return (
-    <header className='sticky bg-white top-0 z-10 w-full border-b border-border'>
+    <header className='sticky bg-white top-0 z-10 w-full border-b border-border '>
       <div className='container flex items-center h-14'>
         <nav className='flex items-center space-x-4 lg:space-x-6'>
           <a className='flex items-center space-x-2 mr-6' href='/'>
@@ -24,6 +25,10 @@ export default async function Header() {
               <p className='mr-4'>{`Hello, ${
                 user.user_metadata['full_name'].split(' ')[0]
               }`}</p>
+              {/*<div className='mr-4'>
+                <ThemeToggle />
+            </div>*/}
+
               <Button>Sign Out</Button>
             </form>
           ) : (

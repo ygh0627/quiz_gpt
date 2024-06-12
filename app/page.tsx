@@ -1,6 +1,6 @@
 export default async function Index() {
   return (
-    <main className="flex flex-col min-h-screen bg-gray-100">
+    <main className="flex flex-col w-full min-h-screen bg-gray-100">
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-6">
           <h1 className="text-3xl font-bold text-gray-800">QuizGPT</h1>
