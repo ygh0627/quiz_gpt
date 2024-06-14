@@ -11,7 +11,7 @@ export default async function Header() {
   } = await supabase.auth.getUser();
 
   return (
-    <header className='sticky bg-white top-0 z-10 w-full border-b border-border '>
+    <header className='sticky top-0 z-10 w-full border-b border-border '>
       <div className='container flex items-center h-14'>
         <nav className='flex items-center space-x-4 lg:space-x-6'>
           <a className='flex items-center space-x-2 mr-6' href='/'>
@@ -22,9 +22,8 @@ export default async function Header() {
         <div className='flex flex-1 items-center justify-end space-x-2'>
           {user !== null ? (
             <form action={signout} className='flex items-center m-2'>
-              <p className='mr-4'>{`Hello, ${
-                user.user_metadata['full_name'].split(' ')[0]
-              }`}</p>
+              <p className='mr-4'>{`Hello, ${user.user_metadata['full_name'].split(' ')[0]
+                }`}</p>
               {/*<div className='mr-4'>
                 <ThemeToggle />
             </div>*/}

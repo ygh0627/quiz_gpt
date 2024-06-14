@@ -6,6 +6,7 @@ import { Checkbox } from './ui/checkbox';
 import { Quiz } from '@/types/custom';
 import { Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from './ui/use-toast';
 
 export function QuizItems({
   questionsString,
@@ -15,6 +16,13 @@ export function QuizItems({
   quizID: number;
 }) {
   const quizQuestions: Question[] = [JSON.parse(questionsString)];
+  const { toast } = useToast()
+  const showToast = () => {
+    toast({
+      description: "Your quiz has been deleted.",
+      variant: "destructive"
+    })
+  }
   return (
     <>
       {quizQuestions.map((q) => (
@@ -52,6 +60,7 @@ export function QuizItems({
               size='icon'
               onClick={async (data) => {
                 await deleteQuiz(quizID);
+                showToast();
                 console.log('done');
               }}
             >

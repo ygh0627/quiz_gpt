@@ -2,6 +2,7 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -32,6 +33,7 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </main>
+        <Toaster />
       </body>
     </html>
   );

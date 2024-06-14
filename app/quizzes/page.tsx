@@ -16,6 +16,7 @@ export default async function QuizzesPage() {
     .from('quizzes')
     .select()
     .order('created_at', { ascending: false });
+
   return (
     <section className='p-3 pt-6 max-w-2xl w-full flex flex-col gap-4'>
       <h1 className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl'>
@@ -37,7 +38,6 @@ export default async function QuizzesPage() {
       </div>
 
       <QuizForm />
-
       <Separator className='w-full' />
       <QuizList quizzes={quizzes} />
     </section>
