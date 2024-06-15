@@ -59,7 +59,7 @@ export function QuizItems({
                 {quiz.name}
               </p>
               {quizQuestions.map((q) => (
-                <div>{q.prompt}</div>
+                <div key={`${q.prompt}`}>{q.prompt}</div>
               ))}
             </div>
             <Button

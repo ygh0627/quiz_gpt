@@ -1,6 +1,8 @@
 import { QuizForm } from '@/components/quiz-form';
 import { QuizList } from '@/components/quiz-list';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { generateQuiz } from '@/utils/openai';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -18,7 +20,8 @@ export default async function QuizzesPage() {
     .eq('contenttype', 'quiz')
     .order('created_at', { ascending: false });
 
-  // content provides a list of quizzes
+  //const response = await generateQuiz("The solar system consists of the Sun, a nearly perfect sphere of hot plasma, and the celestial objects gravitationally bound to it. This includes eight planets, their moons, dwarf planets, and countless smaller objects like asteroids and comets. The planets, in order of their distance from the Sun, are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune. Each planet has unique characteristics, with terrestrial planets (Mercury, Venus, Earth, Mars) being rocky and gas giants (Jupiter, Saturn, Uranus, Neptune) mostly composed of hydrogen and helium. The solar system also contains the asteroid belt between Mars and Jupiter, and the Kuiper Belt and Oort Cloud at its fringes, which are regions filled with icy bodies and cometary nuclei.");
+  //console.log(response.choices[0].message.content);
 
   return (
     <section className='p-3 pt-6 max-w-2xl w-full flex flex-col gap-4'>

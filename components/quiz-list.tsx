@@ -21,7 +21,7 @@ export async function QuizList({
 }) {
   return (
     <>
-      <div className='flex flex-col w-full m-4'>
+      <div className='flex flex-col w-full'>
         {quizzes?.map((quiz) => {
           return (
             <div key={`top-div-${quiz.id}`} className='flex flex-row '>
