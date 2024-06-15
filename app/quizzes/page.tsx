@@ -12,10 +12,13 @@ export default async function QuizzesPage() {
   if (!user) {
     return redirect('/login');
   }
-  const { data: quizzes } = await supabase
-    .from('quizzes')
-    .select()
+  const { data: content } = await supabase
+    .from('content')
+    .select('*')
+    .eq('contenttype', 'quiz')
     .order('created_at', { ascending: false });
+
+  // content provides a list of quizzes
 
   return (
     <section className='p-3 pt-6 max-w-2xl w-full flex flex-col gap-4'>
@@ -27,19 +30,21 @@ export default async function QuizzesPage() {
         STRINGS UNTIL JSON VALIDATOR IS CREATED
       </div>
 
-      <div className='text-sm'>
-        {`{"id":"3","isCorrect":null,"prompt":"What is the boiling point of water?","answerChoices":["a) 90°C","b) 100°C","c) 110°C","d) 120°C"],"correctAnswer":"b","explanation":"Water boils at 100°C under standard atmospheric pressure.","isComplete":false,"difficulty":"easy","hint":"It is a common knowledge temperature."}`}
-      </div>
-      <div className='text-sm'>
-        {`{"id":"4","isCorrect":null,"prompt":"Who wrote 'To Kill a Mockingbird'?","answerChoices":["a) Harper Lee","b) J.K. Rowling","c) Mark Twain","d) Ernest Hemingway"],"correctAnswer":"a","explanation":"Harper Lee is the author of 'To Kill a Mockingbird'.","isComplete":false,"difficulty":"medium","hint":"The author's last name is Lee."}`}
-      </div>
-      <div className='text-sm'>
-        {`{"id":"5","isCorrect":null,"prompt":"What is the capital of Japan?","answerChoices":["a) Beijing","b) Seoul","c) Tokyo","d) Bangkok"],"correctAnswer":"c","explanation":"Tokyo is the capital city of Japan.","isComplete":false,"difficulty":"easy","hint":"It is one of the most populous cities in the world."}`}
-      </div>
-
       <QuizForm />
       <Separator className='w-full' />
-      <QuizList quizzes={quizzes} />
+      <QuizList quizzes={content} />
+      <div className='text-sm'>
+        {`{"name":"History Quiz","contentType":"quiz","content":[{"id":"1","prompt":"Who was the first President of the United States?","answerChoices":["a) Thomas Jefferson","b) George Washington","c) Abraham Lincoln","d) John Adams"],"correctAnswer":"b","explanation":"George Washington was the first President of the United States.","isComplete":true,"isCorrect":null,"difficulty":"easy","hint":"He was a general during the American Revolutionary War."},{"id":"2","prompt":"In which year did the Titanic sink?","answerChoices":["a) 1905","b) 1912","c) 1920","d) 1915"],"correctAnswer":"b","explanation":"The Titanic sank in 1912 after hitting an iceberg.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"It was during the early 20th century."},{"id":"3","prompt":"Who was the principal author of the Declaration of Independence?","answerChoices":["a) Benjamin Franklin","b) John Adams","c) Thomas Jefferson","d) James Madison"],"correctAnswer":"c","explanation":"Thomas Jefferson was the principal author of the Declaration of Independence.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"He later became the third President of the United States."}]}
+`}
+      </div>
+      <div className='text-sm'>
+        {`{"name":"Science Quiz","contentType":"quiz","content":[{"id":"1","prompt":"What is the chemical symbol for water?","answerChoices":["a) H2O","b) CO2","c) O2","d) H2"],"correctAnswer":"a","explanation":"H2O is the chemical formula for water, consisting of two hydrogen atoms and one oxygen atom.","isComplete":true,"isCorrect":null,"difficulty":"easy","hint":"It's a common formula taught in early science classes."},{"id":"2","prompt":"What planet is known as the Red Planet?","answerChoices":["a) Venus","b) Saturn","c) Mars","d) Jupiter"],"correctAnswer":"c","explanation":"Mars is known as the Red Planet due to its reddish appearance caused by iron oxide on its surface.","isComplete":true,"isCorrect":null,"difficulty":"easy","hint":"It's named after the Roman god of war."},{"id":"3","prompt":"What gas do plants absorb from the atmosphere?","answerChoices":["a) Oxygen","b) Nitrogen","c) Carbon Dioxide","d) Hydrogen"],"correctAnswer":"c","explanation":"Plants absorb carbon dioxide from the atmosphere and use it in photosynthesis to produce oxygen.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"It's essential for the process of photosynthesis."}]}
+`}
+      </div>
+      <div className='text-sm'>
+        {`{"name":"Math Quiz","contentType":"quiz","content":[{"id":"1","prompt":"What is the value of pi to two decimal places?","answerChoices":["a) 3.12","b) 3.14","c) 3.16","d) 3.18"],"correctAnswer":"b","explanation":"Pi is approximately 3.14 to two decimal places.","isComplete":true,"isCorrect":null,"difficulty":"easy","hint":"It's a famous irrational number used in mathematics."},{"id":"2","prompt":"What is the square root of 144?","answerChoices":["a) 10","b) 11","c) 12","d) 13"],"correctAnswer":"c","explanation":"The square root of 144 is 12.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"It's a perfect square number."},{"id":"3","prompt":"If a triangle has angles 90°, 45°, and 45°, what type of triangle is it?","answerChoices":["a) Equilateral","b) Scalene","c) Isosceles","d) Right-angled"],"correctAnswer":"d","explanation":"A triangle with angles 90°, 45°, and 45° is a right-angled triangle.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"One angle is a right angle."}]}
+`}
+      </div>
     </section>
   );
 }

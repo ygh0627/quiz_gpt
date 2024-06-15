@@ -7,31 +7,36 @@ import { Quiz } from '@/types/custom';
 import { Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from './ui/use-toast';
+import { Question } from '@/types/planning';
 
 export function QuizItems({
-  questionsString,
-  quizID,
+  quiz,
 }: {
-  questionsString: string;
-  quizID: number;
+  quiz: {
+    content: string | null;
+    contenttype: string | null;
+    created_at: string;
+    id: number;
+    name: string | null;
+    user_id: string;
+  };
 }) {
-  const quizQuestions: Question[] = [JSON.parse(questionsString)];
-  const { toast } = useToast()
+  const quizQuestions: Question[] = JSON.parse(quiz.content!);
+  const { toast } = useToast();
   const showToast = () => {
     toast({
-      description: "Your quiz has been deleted.",
-      variant: "destructive"
-    })
-  }
+      description: 'Your quiz has been deleted.',
+      variant: 'destructive',
+    });
+  };
   return (
     <>
-      {quizQuestions.map((q) => (
-        <Card key={`Card-${q.prompt}`} className={cn('w-full')}>
-          <CardContent
-            key={`CardContent-${q.prompt}`}
-            className='flex items-start m-3'
-          >
-            {/*
+      <Card key={`Card-${quiz.name}`} className={cn('w-full')}>
+        <CardContent
+          key={`CardContent-${quiz.name}`}
+          className='flex flex-row items-center m-4'
+        >
+          {/*
             <span className='size-12 flex items-center justify-center'>
               <Checkbox 
                 checked={Boolean(q.isComplete)}
@@ -45,12 +50,18 @@ export function QuizItems({
               />
             </span>
               */}
-            <p
-              key={`p-${q.prompt}`}
-              className={cn('flex-1 pt-2 min-w-0 break-words')}
-            >
-              {q.prompt}
-            </p>
+          <div className='flex flex-row justify-between items-center w-full'>
+            <div className='flex flex-col justify-between'>
+              <p
+                key={`p-${quiz.name}`}
+                className={cn('flex-1 pt-2 min-w-0 break-words')}
+              >
+                {quiz.name}
+              </p>
+              {quizQuestions.map((q) => (
+                <div>{q.prompt}</div>
+              ))}
+            </div>
             <Button
               formAction={async (data) => {
                 //await deleteQuiz(quiz.id);
@@ -58,17 +69,16 @@ export function QuizItems({
               }}
               variant='ghost'
               size='icon'
-              onClick={async (data) => {
-                await deleteQuiz(quizID);
+              onClick={async (_data) => {
+                await deleteQuiz(quiz.id);
                 showToast();
-                console.log('done');
               }}
             >
-              <Trash2 key={`trash2-${q.prompt}`} className='h-6 w-6' />
+              <Trash2 key={`trash2-${quiz.name}`} className='h-6 w-6' />
             </Button>
-          </CardContent>
-        </Card>
-      ))}
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 }

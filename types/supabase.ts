@@ -9,31 +9,34 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      quizzes: {
+      content: {
         Row: {
+          content: string | null
+          contenttype: string | null
           created_at: string
           id: number
           name: string | null
-          questions: string | null
           user_id: string
         }
         Insert: {
+          content?: string | null
+          contenttype?: string | null
           created_at?: string
           id?: number
           name?: string | null
-          questions?: string | null
           user_id: string
         }
         Update: {
+          content?: string | null
+          contenttype?: string | null
           created_at?: string
           id?: number
           name?: string | null
-          questions?: string | null
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "quizzes_user_id_fkey"
+            foreignKeyName: "content_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
