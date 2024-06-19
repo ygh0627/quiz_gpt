@@ -1,13 +1,22 @@
 'use client';
 import { deleteQuiz, updateQuiz } from '@/app/quizzes/actions';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from './ui/checkbox';
 import { Quiz } from '@/types/custom';
-import { Trash2 } from 'lucide-react';
+import { Trash2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from './ui/use-toast';
 import { Question } from '@/types/planning';
+import { QuizQuestion } from './quiz-question';
+import { AlertDialogCancel } from './ui/alert-dialog';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from './ui/carousel';
 
 export function QuizItems({
   quiz,
@@ -22,61 +31,35 @@ export function QuizItems({
   };
 }) {
   const quizQuestions: Question[] = JSON.parse(quiz.content!);
-  const { toast } = useToast();
-  const showToast = () => {
-    toast({
-      description: 'Your quiz has been deleted.',
-      variant: 'destructive',
-    });
-  };
+
   return (
     <>
-      <Card key={`Card-${quiz.name}`} className={cn('w-full')}>
+      <Card>
+        <CardHeader className='flex flex-row justify-between items-center'>
+          <CardTitle>{quiz.name}</CardTitle>
+          <AlertDialogCancel>
+            <X />
+          </AlertDialogCancel>
+        </CardHeader>
         <CardContent
           key={`CardContent-${quiz.name}`}
-          className='flex flex-row items-center m-4'
+          className='flex flex-row items-center m-4 '
         >
-          {/*
-            <span className='size-12 flex items-center justify-center'>
-              <Checkbox 
-                checked={Boolean(q.isComplete)}
-                onCheckedChange={async (val) => {
-                  if (val === 'indeterminate') {
-                    return;
-                  }
-
-                  await updateQuiz({ ...q})
-                }}
-              />
-            </span>
-              */}
-          <div className='flex flex-row justify-between items-center w-full'>
-            <div className='flex flex-col justify-between'>
-              <p
-                key={`p-${quiz.name}`}
-                className={cn('flex-1 pt-2 min-w-0 break-words')}
-              >
-                {quiz.name}
-              </p>
-              {quizQuestions.map((q) => (
-                <div key={`${q.prompt}`}>{q.prompt}</div>
+          <Carousel
+            opts={{ align: 'start' }}
+            orientation='horizontal'
+            className='w-full'
+          >
+            <CarouselContent className='-mt-1 max-w-[540px]'>
+              {quizQuestions.map((q, i) => (
+                <CarouselItem>
+                  <QuizQuestion question={q} index={i} />
+                </CarouselItem>
               ))}
-            </div>
-            <Button
-              formAction={async (data) => {
-                //await deleteQuiz(quiz.id);
-                console.log('don1e');
-              }}
-              variant='ghost'
-              size='icon'
-              onClick={async (_data) => {
-                await deleteQuiz(quiz.id);
-                showToast();
-              }}
-            >
-              <Trash2 key={`trash2-${quiz.name}`} className='h-6 w-6' />
-            </Button>
-          </div>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </CardContent>
       </Card>
     </>
