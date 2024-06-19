@@ -1,12 +1,6 @@
 'use client';
-import { deleteQuiz, updateQuiz } from '@/app/quizzes/actions';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from './ui/checkbox';
-import { Quiz } from '@/types/custom';
-import { Trash2, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useToast } from './ui/use-toast';
+import { X } from 'lucide-react';
 import { Question } from '@/types/planning';
 import { QuizQuestion } from './quiz-question';
 import { AlertDialogCancel } from './ui/alert-dialog';

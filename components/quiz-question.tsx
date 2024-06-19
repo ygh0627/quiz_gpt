@@ -1,6 +1,12 @@
 import { Question } from '@/types/planning';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { QuizQuestionAnswerChoice } from './quiz-question-answer-choice';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Button } from './ui/button';
 
 export function QuizQuestion({
   question,
@@ -16,9 +22,24 @@ export function QuizQuestion({
           {index + 1}. ) {question.prompt}
         </CardTitle>
         <CardContent>
-          {question.answerChoices.map((answer) => (
-            <QuizQuestionAnswerChoice letter={answer.substring(0, 2)} value={answer.substring(2)} />
-          ))}
+          <div className='flex flex-row'>
+            <div>
+              {question.answerChoices.map((answer) => (
+                <QuizQuestionAnswerChoice
+                  letter={answer.substring(0, 2)}
+                  value={answer.substring(2)}
+                />
+              ))}
+            </div>
+            <div className='w-full flex items-start justify-end'>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button>Hint</Button>
+                </PopoverTrigger>
+                <PopoverContent>{question.hint}</PopoverContent>
+              </Popover>
+            </div>
+          </div>
         </CardContent>
       </CardHeader>
     </Card>
