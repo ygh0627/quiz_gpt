@@ -22,7 +22,7 @@ export async function oAuthSignIn(provider: Provider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: redirectUrl,
+      redirectTo: `https://dniupvfeibclkakhiagi.supabase.co/auth/v1/callback`,
     },
   });
 
