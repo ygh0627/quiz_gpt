@@ -2,10 +2,10 @@ import { Question } from '@/types/planning';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { QuizQuestionAnswerChoice } from './quiz-question-answer-choice';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import { Button } from './ui/button';
 
 export function QuizQuestion({
@@ -16,7 +16,7 @@ export function QuizQuestion({
   index: number;
 }) {
   return (
-    <Card>
+    <Card className='my-2 overflow-y-auto'>
       <CardHeader>
         <CardTitle>
           {index + 1}. ) {question.prompt}
@@ -31,13 +31,13 @@ export function QuizQuestion({
                 />
               ))}
             </div>
-            <div className='w-full flex items-start justify-end'>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button>Hint</Button>
-                </PopoverTrigger>
-                <PopoverContent>{question.hint}</PopoverContent>
-              </Popover>
+            <div className='w-full flex items-start justify-end mt-4'>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <Button variant='outline'>Hint</Button>
+                </HoverCardTrigger>
+                <HoverCardContent>{question.hint}</HoverCardContent>
+              </HoverCard>
             </div>
           </div>
         </CardContent>

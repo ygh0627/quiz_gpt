@@ -44,7 +44,7 @@ export async function QuizList({
                 createdAt={quiz.created_at}
               />
 
-              <AlertDialogContent className='min-w-[960px] max-h-[540px]'>
+              <AlertDialogContent className='min-w-[1200px] min-h-[800px]'>
                 <QuizItems key={quiz.id} quiz={quiz} />
               </AlertDialogContent>
             </AlertDialog>

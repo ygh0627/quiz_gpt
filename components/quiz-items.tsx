@@ -11,6 +11,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from './ui/carousel';
+import { Separator } from './ui/separator';
+import { ScrollArea } from './ui/scroll-area';
 
 export function QuizItems({
   quiz,
@@ -27,35 +29,27 @@ export function QuizItems({
   const quizQuestions: Question[] = JSON.parse(quiz.content!);
 
   return (
-    <>
-      <Card>
+    <Card>
+      <div className='flex flex-col justify-center'>
         <CardHeader className='flex flex-row justify-between items-center'>
           <CardTitle>{quiz.name}</CardTitle>
           <AlertDialogCancel>
             <X />
           </AlertDialogCancel>
         </CardHeader>
-        <CardContent
-          key={`CardContent-${quiz.name}`}
-          className='flex flex-row items-center m-4 '
-        >
-          <Carousel
-            opts={{ align: 'start' }}
-            orientation='horizontal'
-            className='w-full'
-          >
-            <CarouselContent className='-mt-1 max-w-[540px]'>
-              {quizQuestions.map((q, i) => (
-                <CarouselItem>
-                  <QuizQuestion question={q} index={i} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </CardContent>
-      </Card>
-    </>
+        <div className='mx-6 -mt-4 mb-4'>
+          <Separator />
+        </div>
+      </div>
+      <div className='flex flex-grow h-fill'>
+        <ScrollArea className='h-[800px] w-full'>
+          <CardContent key={`CardContent-${quiz.name}`}>
+            {quizQuestions.map((q, i) => (
+              <QuizQuestion question={q} index={i} />
+            ))}
+          </CardContent>
+        </ScrollArea>
+      </div>
+    </Card>
   );
 }
