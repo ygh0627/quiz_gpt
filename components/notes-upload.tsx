@@ -20,12 +20,13 @@ import { useFormStatus } from 'react-dom';
 import { Textarea } from './ui/textarea';
 import { generateQuiz } from '@/utils/openai';
 import { addQuiz } from '@/app/quizzes/actions';
+import { useAuth } from '@clerk/nextjs';
 
 export function NotesUpload() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <FloatingActionButton onClick={() => {}} />
+        <FloatingActionButton onClick={() => { }} />
       </DialogTrigger>
       <DialogContent className='md:max-w-[800px]'>
         <DialogHeader>
@@ -67,6 +68,7 @@ function NotesContent() {
 
 function NotesForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const { userId } = useAuth();
   return (
     <Card>
       <CardContent className='p-3'>
@@ -85,7 +87,7 @@ function NotesForm() {
             });
             // get quiz
             const quiz = response.choices[0].message.content
-            await addQuiz(quiz!);
+            await addQuiz(quiz!, userId);
             console.log('sup');
             formRef.current?.reset();
           }}

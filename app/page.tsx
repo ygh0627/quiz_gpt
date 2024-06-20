@@ -1,4 +1,30 @@
+import { currentUser } from "@clerk/nextjs/server";
+import { createClient } from "@/utils/supabase/server";
 export default async function Index() {
+
+  const user = await currentUser()
+
+  if (user) {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('user')
+      .select('*')
+      .eq('userId', user.id)
+      .single();
+
+    if (!data) {
+      const { error } = await supabase.from("user").insert({
+        credit: 0,
+        userId: user.id
+      });
+      if (error) {
+        throw new Error("Error adding user");
+      }
+    }
+  }
+
+
+
   return (
     <main className="flex flex-col w-full min-h-screen bg-gray-100">
       <header className="bg-white shadow">

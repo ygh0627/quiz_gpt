@@ -9,12 +9,7 @@ import { redirect } from 'next/navigation';
 
 export default async function QuizzesPage() {
   const supabase = createClient();
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
-  // if (!user) {
-  //   return redirect('/login');
-  // }
+
   const { data: content } = await supabase
     .from('content')
     .select('*')
