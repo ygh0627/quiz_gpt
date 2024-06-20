@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import { ClerkProvider } from '@clerk/nextjs'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -20,21 +21,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className={GeistSans.className}>
-      <body className='sticky top-0 bg-background text-foreground'>
-        <Header />
-        <main className='flex flex-col items-center'>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </main>
-        <Toaster />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang='en' className={GeistSans.className}>
+        <body className='sticky top-0 bg-background text-foreground'>
+          <Header />
+          <main className='flex flex-col items-center'>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </main>
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
