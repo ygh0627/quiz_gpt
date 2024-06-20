@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 export default async function Header() {
   const supabase = createClient();
   const {
@@ -20,21 +20,22 @@ export default async function Header() {
           <Link href='/quizzes'>Quizzes</Link>
         </nav>
         <div className='flex flex-1 items-center justify-end space-x-2'>
-          {user !== null ? (
+          <UserButton afterSignOutUrl='/' />
+          {/* {user !== null ? (
             <form action={signout} className='flex items-center m-2'>
               <p className='mr-4'>{`Hello, ${user.user_metadata['full_name'].split(' ')[0]
-                }`}</p>
-              {/*<div className='mr-4'>
+                }`}</p> */}
+          {/*<div className='mr-4'>
                 <ThemeToggle />
             </div>*/}
 
-              <Button>Sign Out</Button>
+          {/* <Button>Sign Out</Button>
             </form>
           ) : (
             <Button asChild>
               <Link href='/login'>Sign In</Link>
             </Button>
-          )}
+          )} */}
         </div>
       </div>
     </header>
