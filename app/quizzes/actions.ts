@@ -5,7 +5,6 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function addQuiz(quiz: string, userId: string | null | undefined) {
   const supabase = createClient();
-  console.log(quiz);
   const contentObject = JSON.parse(quiz);
 
   if (!userId) {
