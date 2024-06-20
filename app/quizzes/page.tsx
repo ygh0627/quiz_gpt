@@ -1,3 +1,4 @@
+import { NotesUpload } from '@/components/notes-upload';
 import { QuizForm } from '@/components/quiz-form';
 import { QuizList } from '@/components/quiz-list';
 import { Button } from '@/components/ui/button';
@@ -24,18 +25,16 @@ export default async function QuizzesPage() {
   //console.log(response.choices[0].message.content);
 
   return (
-    <section className='p-3 pt-6 max-w-2xl w-full flex flex-col gap-4'>
+    <section className='p-3 pt-6 max-w-6xl w-full flex flex-col gap-4'>
       <h1 className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl'>
         Quizzes
       </h1>
-      <div className='text-sm font-medium text-destructive'>
-        FOR TESTING ONLY - DO NOT PASTE AND SEND ANYTHING OTHER THAN THESE
-        STRINGS UNTIL JSON VALIDATOR IS CREATED
-      </div>
 
       <QuizForm />
       <Separator className='w-full' />
+      
       <QuizList quizzes={content} />
+      <NotesUpload />
       <div className='text-sm'>
         {`{"name":"History Quiz","contentType":"quiz","content":[{"id":"1","prompt":"Who was the first President of the United States?","answerChoices":["a) Thomas Jefferson","b) George Washington","c) Abraham Lincoln","d) John Adams"],"correctAnswer":"b","explanation":"George Washington was the first President of the United States.","isComplete":true,"isCorrect":null,"difficulty":"easy","hint":"He was a general during the American Revolutionary War."},{"id":"2","prompt":"In which year did the Titanic sink?","answerChoices":["a) 1905","b) 1912","c) 1920","d) 1915"],"correctAnswer":"b","explanation":"The Titanic sank in 1912 after hitting an iceberg.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"It was during the early 20th century."},{"id":"3","prompt":"Who was the principal author of the Declaration of Independence?","answerChoices":["a) Benjamin Franklin","b) John Adams","c) Thomas Jefferson","d) James Madison"],"correctAnswer":"c","explanation":"Thomas Jefferson was the principal author of the Declaration of Independence.","isComplete":true,"isCorrect":null,"difficulty":"medium","hint":"He later became the third President of the United States."}]}
 `}

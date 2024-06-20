@@ -1,9 +1,22 @@
 'use client';
-import { Question } from '@/types/planning';
 import { QuizItems } from './quiz-items';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Trash2, X } from 'lucide-react';
+import { Card, CardFooter, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { deleteQuiz } from '@/app/quizzes/actions';
-import { Trash2 } from 'lucide-react';
+import { useToast } from './ui/use-toast';
+import { QuizFace } from './quiz-face';
 
 export async function QuizList({
   quizzes,
@@ -21,12 +34,20 @@ export async function QuizList({
 }) {
   return (
     <>
-      <div className='flex flex-col w-full'>
+      <div className='grid grid-cols-2 gap-4'>
         {quizzes?.map((quiz) => {
           return (
-            <div key={`top-div-${quiz.id}`} className='flex flex-row '>
-              <QuizItems key={quiz.id} quiz={quiz} />
-            </div>
+            <AlertDialog key={`alert-dialog-${quiz.id}`}>
+              <QuizFace
+                name={quiz.name!}
+                quizID={quiz.id}
+                createdAt={quiz.created_at}
+              />
+
+              <AlertDialogContent className='min-w-[1200px] min-h-[800px]'>
+                <QuizItems key={quiz.id} quiz={quiz} />
+              </AlertDialogContent>
+            </AlertDialog>
           );
         })}
       </div>
