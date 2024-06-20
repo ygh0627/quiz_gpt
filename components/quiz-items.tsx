@@ -31,7 +31,7 @@ export function QuizItems({
   return (
     <Card>
       <div className='flex flex-col justify-center'>
-        <CardHeader className='flex flex-row justify-between items-center'>
+        <CardHeader className='flex flex-row justify-between items-end'>
           <CardTitle>{quiz.name}</CardTitle>
           <AlertDialogCancel>
             <X />
