@@ -32,7 +32,7 @@ export function QuizForm() {
     <Card>
       <CardContent className='p-3'>
         <form ref={formRef} className='flex gap-4' action={async (data) => {
-          await addQuiz(data);
+          //await addQuiz(data);
           formRef.current?.reset();
         }}>
           <FormContent />

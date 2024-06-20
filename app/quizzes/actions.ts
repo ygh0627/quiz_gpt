@@ -3,14 +3,10 @@ import { Quiz } from '@/types/custom';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
 
-export async function addQuiz(formData: FormData) {
+export async function addQuiz(quiz: string) {
   const supabase = createClient();
-  const text = formData.get('quiz') as string | null;
-  if (!text) {
-    throw new Error('Text is required');
-  }
-
-  const contentObject = JSON.parse(text);
+  console.log(quiz);
+  const contentObject = JSON.parse(quiz);
 
   const {
     data: { user },

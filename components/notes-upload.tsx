@@ -18,6 +18,8 @@ import { useRef } from 'react';
 import { Card, CardContent } from './ui/card';
 import { useFormStatus } from 'react-dom';
 import { Textarea } from './ui/textarea';
+import { generateQuiz } from '@/utils/openai';
+import { addQuiz } from '@/app/quizzes/actions';
 
 export function NotesUpload() {
   return (
@@ -39,14 +41,10 @@ export function NotesUpload() {
             <div>or</div>
             <Separator />
           </div>
-          <div>
-          Paste your notes below:
-          </div>
+          <div>Paste your notes below:</div>
           <NotesForm />
         </div>
-        <DialogFooter>
-          <Button type='submit'>Generate Quiz</Button>
-        </DialogFooter>
+        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   );
@@ -62,6 +60,7 @@ function NotesContent() {
         name='notes'
         placeholder='Paste your notes here...'
       />
+      <Button type='submit'>Generate Quiz</Button>
     </>
   );
 }
@@ -71,7 +70,26 @@ function NotesForm() {
   return (
     <Card>
       <CardContent className='p-3'>
-        <form ref={formRef} className='flex gap-4' action={async () => {}}>
+        <form
+          ref={formRef}
+          className='flex gap-4'
+          action={async (data) => {
+            const text = data.get('notes') as string | null;
+            if (!text) {
+              throw new Error('Text is required');
+            }
+            // send notes to chatgpt
+            const response = await generateQuiz({
+              notes: text,
+              difficulty: 'hard',
+            });
+            // get quiz
+            const quiz = response.choices[0].message.content
+            await addQuiz(quiz!);
+            console.log('sup');
+            formRef.current?.reset();
+          }}
+        >
           <NotesContent />
         </form>
       </CardContent>

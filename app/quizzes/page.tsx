@@ -30,9 +30,8 @@ export default async function QuizzesPage() {
         Quizzes
       </h1>
 
-      <QuizForm />
       <Separator className='w-full' />
-      
+
       <QuizList quizzes={content} />
       <NotesUpload />
       <div className='text-sm'>
