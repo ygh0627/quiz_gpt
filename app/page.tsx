@@ -5,6 +5,7 @@ export default async function Index() {
   const user = await currentUser()
 
   if (user) {
+
     const supabase = createClient();
     const { data, error } = await supabase
       .from('user')

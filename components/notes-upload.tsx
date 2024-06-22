@@ -87,7 +87,7 @@ function NotesForm() {
             });
             // get quiz
             const quiz = response.choices[0].message.content
-            await addQuiz(quiz!, userId);
+            await addQuiz(quiz!);
             console.log('sup');
             formRef.current?.reset();
           }}

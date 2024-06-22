@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from './ui/card';
@@ -13,8 +12,6 @@ import { deleteQuiz } from '@/app/quizzes/actions';
 import { Trash2 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { AlertDialogTrigger } from './ui/alert-dialog';
-import { Separator } from './ui/separator';
-import { useAuth } from '@clerk/nextjs';
 
 export function QuizFace({
   name,
@@ -26,7 +23,6 @@ export function QuizFace({
   createdAt: string;
 }) {
   const { toast } = useToast();
-  const { userId } = useAuth();
   const showToast = () => {
     toast({
       description: 'Your quiz has been deleted.',
@@ -45,7 +41,7 @@ export function QuizFace({
             variant='ghost'
             size='icon'
             onClick={async (_data) => {
-              await deleteQuiz(quizID, userId);
+              await deleteQuiz(quizID);
               showToast();
             }}
           >

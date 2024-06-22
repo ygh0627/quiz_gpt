@@ -2,17 +2,24 @@
 import { Quiz } from "@/types/custom";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/utils/supabase/server";
+import { currentUser } from "@clerk/nextjs";
 
-export async function addQuiz(quiz: string, userId: string | null | undefined) {
+export async function addQuiz(quiz: string) {
   const supabase = createClient();
   const contentObject = JSON.parse(quiz);
-
-  if (!userId) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error("User is not logged in");
   }
 
+  const { data: writer, error: userError } = await supabase
+    .from("user")
+    .select("*")
+    .eq("userId", user.id)
+    .single();
+
   const { error } = await supabase.from("content").insert({
-    user_id: userId,
+    user_id: writer.uuid,
     name: contentObject.name,
     contenttype: contentObject.contentType,
     content: contentObject.content,
@@ -20,25 +27,29 @@ export async function addQuiz(quiz: string, userId: string | null | undefined) {
 
   if (error) {
     console.log(error);
-    console.log(userId);
     throw new Error("Error inserting quiz");
   }
 
   revalidatePath("/quizzes");
 }
 
-export async function deleteQuiz(
-  id: number,
-  userId: string | null | undefined
-) {
+export async function deleteQuiz(id: number) {
   const supabase = createClient();
+  const user = await currentUser();
 
-  if (!userId) {
+  if (!user) {
     throw new Error("User is not logged in");
   }
+
+  const { data: writer, error: userError } = await supabase
+    .from("user")
+    .select("*")
+    .eq("userId", user.id)
+    .single();
+
   const { error } = await supabase.from("content").delete().match({
-    user_id: userId,
-    id: id,
+    user_id: writer.uuid,
+    id,
   });
 
   if (error) {
@@ -48,18 +59,21 @@ export async function deleteQuiz(
   revalidatePath("/quizzes");
 }
 
-export async function updateQuiz(
-  quiz: Quiz,
-  userId: string | null | undefined
-) {
+export async function updateQuiz(quiz: Quiz) {
   const supabase = createClient();
-
-  if (!userId) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error("User is not logged in");
   }
 
+  const { data: writer, error: userError } = await supabase
+    .from("user")
+    .select("*")
+    .eq("userId", user.id)
+    .single();
+
   const { error } = await supabase.from("content").update(quiz).match({
-    user_id: userId,
+    user_id: writer.uuid,
     id: quiz.id,
   });
 
