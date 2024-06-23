@@ -1,5 +1,3 @@
-'use client';
-import { cn } from '@/lib/utils';
 import {
   Card,
   CardContent,
@@ -8,10 +6,8 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { deleteQuiz } from '@/app/quizzes/actions';
-import { Trash2 } from 'lucide-react';
-import { useToast } from './ui/use-toast';
 import { AlertDialogTrigger } from './ui/alert-dialog';
+import { QuizFaceButton } from './quiz-face-button';
 
 export function QuizFace({
   name,
@@ -22,31 +18,13 @@ export function QuizFace({
   quizID: number;
   createdAt: string;
 }) {
-  const { toast } = useToast();
-  const showToast = () => {
-    toast({
-      description: 'Your quiz has been deleted.',
-      variant: 'destructive',
-    });
-  };
   return (
     <Card className='w-[480px]'>
       <CardHeader>
         <div className='flex flex-row justify-between items-center'>
           <CardTitle>{name}</CardTitle>
-          <Button
-            formAction={async (data) => {
-              console.log('don1e');
-            }}
-            variant='ghost'
-            size='icon'
-            onClick={async (_data) => {
-              await deleteQuiz(quizID);
-              showToast();
-            }}
-          >
-            <Trash2 key={`trash2-${name}`} className='h-6 w-6' />
-          </Button>
+          {/* maybe prop drilling but we can refactor later */}
+          <QuizFaceButton quizID={quizID} name={name} />
         </div>
         <CardDescription>
           Created on {createdAt.substring(0, 10)}

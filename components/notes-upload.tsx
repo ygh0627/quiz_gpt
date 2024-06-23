@@ -1,4 +1,3 @@
-'use client';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,21 +11,26 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from './ui/separator';
-import { FloatingActionButton } from './floating-action';
-import { CloudUpload, Send } from 'lucide-react';
+import { CloudUpload, Plus, Send } from 'lucide-react';
 import { useRef } from 'react';
 import { Card, CardContent } from './ui/card';
 import { useFormStatus } from 'react-dom';
 import { Textarea } from './ui/textarea';
-import { generateQuiz } from '@/utils/openai';
+import { generateQuiz } from '@/app/quizzes/actions';
 import { addQuiz } from '@/app/quizzes/actions';
 import { useAuth } from '@clerk/nextjs';
+import { NotesForm } from './notes-form';
 
 export function NotesUpload() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <FloatingActionButton onClick={() => { }} />
+        <Button
+          variant='default'
+          className='fixed bottom-32 right-32 h-16 w-16 text-white p-4 rounded-full shadow-lg'
+        >
+          <Plus className='h-16 w-16' />
+        </Button>
       </DialogTrigger>
       <DialogContent className='md:max-w-[800px]'>
         <DialogHeader>
@@ -48,53 +52,5 @@ export function NotesUpload() {
         <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-}
-
-function NotesContent() {
-  const { pending } = useFormStatus();
-  return (
-    <>
-      <Textarea
-        disabled={pending}
-        minLength={1}
-        name='notes'
-        placeholder='Paste your notes here...'
-      />
-      <Button type='submit'>Generate Quiz</Button>
-    </>
-  );
-}
-
-function NotesForm() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const { userId } = useAuth();
-  return (
-    <Card>
-      <CardContent className='p-3'>
-        <form
-          ref={formRef}
-          className='flex gap-4'
-          action={async (data) => {
-            const text = data.get('notes') as string | null;
-            if (!text) {
-              throw new Error('Text is required');
-            }
-            // send notes to chatgpt
-            const response = await generateQuiz({
-              notes: text,
-              difficulty: 'hard',
-            });
-            // get quiz
-            const quiz = response.choices[0].message.content
-            await addQuiz(quiz!);
-            console.log('sup');
-            formRef.current?.reset();
-          }}
-        >
-          <NotesContent />
-        </form>
-      </CardContent>
-    </Card>
   );
 }
