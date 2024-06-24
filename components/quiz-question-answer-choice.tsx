@@ -11,7 +11,7 @@ export function QuizQuestionAnswerChoice({
     <div key={`${letter} ${value}`} className='flex flex-row'>
       <Button
         variant='outline'
-        className='flex-wrap w-48 m-1 justify-start items-center'
+        className='flex w-auto m-1 justify-start items-center'
       >
         <p className='font-medium leading-none'>
           {letter} {value}
