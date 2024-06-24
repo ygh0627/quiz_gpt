@@ -14,6 +14,7 @@ export default async function Header() {
           <Link href='/quizzes'>Quizzes</Link>
         </nav>
         <div className='flex flex-1 items-center justify-end space-x-2'>
+          <ThemeToggle />
           <UserButton afterSignOutUrl='/' />
         </div>
       </div>
