@@ -1,16 +1,15 @@
 'use client';
-import { generateQuiz, addQuiz } from "@/app/quizzes/actions";
-import { useAuth } from "@clerk/nextjs";
-import { useRef } from "react";
-import { NotesContent } from "./notes-content";
-import { Card, CardContent } from "./ui/card";
-
-
-
+import { formSubmit } from '@/app/quizzes/actions';
+import { useAuth } from '@clerk/nextjs';
+import { useRef } from 'react';
+import { NotesContent } from './notes-content';
+import { Card, CardContent } from './ui/card';
+import { useRouter } from 'next/navigation';
 
 export function NotesForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const { userId } = useAuth();
+  const router = useRouter();
   return (
     <Card>
       <CardContent className='p-3'>
@@ -18,20 +17,9 @@ export function NotesForm() {
           ref={formRef}
           className='flex gap-4'
           action={async (data) => {
-            const text = data.get('notes') as string | null;
-            if (!text) {
-              throw new Error('Text is required');
-            }
-            // send notes to chatgpt
-            const response = await generateQuiz({
-              notes: text,
-              difficulty: 'hard',
-            });
-            // get quiz
-            const quiz = response.choices[0].message.content;
-            await addQuiz(quiz!);
-            console.log('sup');
+            await formSubmit(data);
             formRef.current?.reset();
+            router.refresh();
           }}
         >
           <NotesContent />

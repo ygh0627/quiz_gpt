@@ -1,21 +1,8 @@
-'use client';
 import { QuizItems } from './quiz-items';
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Trash2, X } from 'lucide-react';
-import { Card, CardFooter, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { deleteQuiz } from '@/app/quizzes/actions';
-import { useToast } from './ui/use-toast';
 import { QuizFace } from './quiz-face';
 
 export async function QuizList({
@@ -39,12 +26,13 @@ export async function QuizList({
           return (
             <AlertDialog key={`alert-dialog-${quiz.id}`}>
               <QuizFace
+                key={`quiz face ${quiz.id}`}
                 name={quiz.name!}
                 quizID={quiz.id}
                 createdAt={quiz.created_at}
               />
 
-              <AlertDialogContent className='min-w-[1200px] min-h-[800px]'>
+              <AlertDialogContent className='min-w-[1200px] h-[800px]'>
                 <QuizItems key={quiz.id} quiz={quiz} />
               </AlertDialogContent>
             </AlertDialog>

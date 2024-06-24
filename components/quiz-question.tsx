@@ -26,6 +26,7 @@ export function QuizQuestion({
             <div>
               {question.answerChoices.map((answer) => (
                 <QuizQuestionAnswerChoice
+                  key={`quiz question answer choice ${question.hint}`}
                   letter={answer.substring(0, 2)}
                   value={answer.substring(2)}
                 />

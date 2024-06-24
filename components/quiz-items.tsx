@@ -1,16 +1,8 @@
-'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { X } from 'lucide-react';
 import { Question } from '@/types/planning';
 import { QuizQuestion } from './quiz-question';
 import { AlertDialogCancel } from './ui/alert-dialog';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from './ui/carousel';
 import { Separator } from './ui/separator';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -30,7 +22,7 @@ export function QuizItems({
 
   return (
     <Card>
-      <div className='flex flex-col justify-center'>
+      <div className='flex flex-col justify-center '>
         <CardHeader className='flex flex-row justify-between items-end'>
           <CardTitle>{quiz.name}</CardTitle>
           <AlertDialogCancel>
@@ -41,11 +33,15 @@ export function QuizItems({
           <Separator />
         </div>
       </div>
-      <div className='flex flex-grow h-fill'>
-        <ScrollArea className='h-[800px] w-full'>
+      <div className='flex flex-grow h-[650px]'>
+        <ScrollArea className='w-full'>
           <CardContent key={`CardContent-${quiz.name}`}>
             {quizQuestions.map((q, i) => (
-              <QuizQuestion question={q} index={i} />
+              <QuizQuestion
+                key={`quiz question ${q.hint}`}
+                question={q}
+                index={i}
+              />
             ))}
           </CardContent>
         </ScrollArea>

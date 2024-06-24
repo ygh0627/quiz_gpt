@@ -1,25 +1,24 @@
-"use server";
-import { Quiz } from "@/types/custom";
-import { revalidatePath } from "next/cache";
-import { createClient } from "@/utils/supabase/server";
-import { currentUser } from "@clerk/nextjs";
+'use server';
+import { Quiz } from '@/types/custom';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { createClient } from '@/utils/supabase/server';
+import { currentUser } from '@clerk/nextjs';
 
 export async function addQuiz(quiz: string) {
   const supabase = createClient();
-  console.log(quiz);
   const contentObject = JSON.parse(quiz);
   const user = await currentUser();
   if (!user) {
-    throw new Error("User is not logged in");
+    throw new Error('User is not logged in');
   }
 
   const { data: writer, error: userError } = await supabase
-    .from("user")
-    .select("*")
-    .eq("userId", user.id)
+    .from('user')
+    .select('*')
+    .eq('userId', user.id)
     .single();
 
-  const { error } = await supabase.from("content").insert({
+  const { error } = await supabase.from('content').insert({
     user_id: writer.uuid,
     name: contentObject.name,
     contenttype: contentObject.contentType,
@@ -28,10 +27,10 @@ export async function addQuiz(quiz: string) {
 
   if (error) {
     console.log(error);
-    throw new Error("Error inserting quiz");
+    throw new Error('Error inserting quiz');
   }
 
-  revalidatePath("/quizzes");
+  revalidatePath('/');
 }
 
 export async function deleteQuiz(id: number) {
@@ -39,56 +38,57 @@ export async function deleteQuiz(id: number) {
   const user = await currentUser();
 
   if (!user) {
-    throw new Error("User is not logged in");
+    throw new Error('User is not logged in');
   }
 
   const { data: writer, error: userError } = await supabase
-    .from("user")
-    .select("*")
-    .eq("userId", user.id)
+    .from('user')
+    .select('*')
+    .eq('userId', user.id)
     .single();
 
-  const { error } = await supabase.from("content").delete().match({
+  const { error } = await supabase.from('content').delete().match({
     user_id: writer.uuid,
     id,
   });
 
   if (error) {
-    throw new Error("Error deleting quiz");
+    throw new Error('Error deleting quiz');
   }
 
-  revalidatePath("/quizzes");
+  revalidatePath('/quizzes');
 }
 
 export async function updateQuiz(quiz: Quiz) {
   const supabase = createClient();
   const user = await currentUser();
   if (!user) {
-    throw new Error("User is not logged in");
+    throw new Error('User is not logged in');
   }
 
   const { data: writer, error: userError } = await supabase
-    .from("user")
-    .select("*")
-    .eq("userId", user.id)
+    .from('user')
+    .select('*')
+    .eq('userId', user.id)
     .single();
 
-  const { error } = await supabase.from("content").update(quiz).match({
+  const { error } = await supabase.from('content').update(quiz).match({
     user_id: writer.uuid,
     id: quiz.id,
   });
 
   if (error) {
-    throw new Error("Error updating quiz");
+    throw new Error('Error updating quiz');
   }
 
-  revalidatePath("/quizzes");
+  revalidatePath('/quizzes');
 }
 
 /**********
  * OPENAI
  **********/
 import OpenAI from 'openai';
+import { RefObject } from 'react';
 
 type notesInfo = {
   notes: string;
@@ -156,4 +156,20 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
     top_p: 1,
   });
   return response;
+}
+
+export async function formSubmit(data: FormData) {
+  const text = data.get('notes') as string | null;
+  if (!text) {
+    throw new Error('Text is required');
+  }
+  // send notes to chatgpt
+  const response = await generateQuiz({
+    notes: text,
+    difficulty: 'hard',
+  });
+
+  // get quiz
+  const quiz = response.choices[0].message.content;
+  addQuiz(quiz!);
 }

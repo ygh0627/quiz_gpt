@@ -8,17 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Separator } from './ui/separator';
-import { CloudUpload, Plus, Send } from 'lucide-react';
-import { useRef } from 'react';
-import { Card, CardContent } from './ui/card';
-import { useFormStatus } from 'react-dom';
-import { Textarea } from './ui/textarea';
-import { generateQuiz } from '@/app/quizzes/actions';
-import { addQuiz } from '@/app/quizzes/actions';
-import { useAuth } from '@clerk/nextjs';
+import { CloudUpload, Plus } from 'lucide-react';
 import { NotesForm } from './notes-form';
 
 export function NotesUpload() {

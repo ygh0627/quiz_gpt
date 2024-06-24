@@ -1,4 +1,3 @@
-'use client';
 import { useFormStatus } from 'react-dom';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
