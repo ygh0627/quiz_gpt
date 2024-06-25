@@ -15,9 +15,6 @@ export function QuizFaceButton({ quizID, name }: { quizID: number, name: string 
 
   return (
     <Button
-      formAction={async (data) => {
-        console.log('don1e');
-      }}
       variant='ghost'
       size='icon'
       onClick={async (_data) => {

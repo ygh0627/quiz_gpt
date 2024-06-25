@@ -6,10 +6,15 @@ import { NotesContent } from './notes-content';
 import { Card, CardContent } from './ui/card';
 import { useRouter } from 'next/navigation';
 
-export function NotesForm() {
+interface NotesFormProps {
+  closeDialog: () => void; // Adjust the type based on the actual type of `closeDialog`
+  showSpinner: () => void;
+  hideSpinner: () => void;
+}
+
+
+export function NotesForm({ closeDialog, showSpinner, hideSpinner }: NotesFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
-  const { userId } = useAuth();
-  const router = useRouter();
   return (
     <Card>
       <CardContent className='p-3'>
@@ -19,10 +24,11 @@ export function NotesForm() {
           action={async (data) => {
             await formSubmit(data);
             formRef.current?.reset();
-            router.refresh();
+            closeDialog();
+            hideSpinner();
           }}
         >
-          <NotesContent />
+          <NotesContent showSpinner={showSpinner} />
         </form>
       </CardContent>
     </Card>

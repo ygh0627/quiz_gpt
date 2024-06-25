@@ -5,6 +5,7 @@ import { QuizQuestion } from './quiz-question';
 import { AlertDialogCancel } from './ui/alert-dialog';
 import { Separator } from './ui/separator';
 import { ScrollArea } from './ui/scroll-area';
+import Loader from './loader';
 
 export function QuizItems({
   quiz,

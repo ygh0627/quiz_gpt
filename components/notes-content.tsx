@@ -1,9 +1,19 @@
 import { useFormStatus } from 'react-dom';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
+import { useEffect } from 'react';
 
-export function NotesContent() {
+interface NotesContentProps {
+  showSpinner: () => void;
+}
+
+export function NotesContent({ showSpinner }: NotesContentProps) {
   const { pending } = useFormStatus();
+  useEffect(() => {
+    if (pending) {
+      showSpinner();
+    }
+  }, [pending])
   return (
     <>
       <Textarea
