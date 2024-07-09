@@ -130,7 +130,7 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
         isCorrect field should always be null. The difficulty field should only either be 'easy', 'medium', or 'hard'. 
         Lastly, the hint field should be a string that contains a hint for the question.
 
-        The above JSON is an example of one question. You will need to generate 10 such questions, stringify them, 
+        The above JSON is an example of one question. You will need to generate 5 such questions, stringify them, 
         place the string in the content field of the first JSON, and then return the stringified version of that JSON.
         An small example of what you should return is as follows (without the outer quotes): 
         "
