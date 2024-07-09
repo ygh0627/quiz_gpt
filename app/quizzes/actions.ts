@@ -1,24 +1,24 @@
-"use server";
-import { Quiz } from "@/types/custom";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { createClient } from "@/utils/supabase/server";
-import { currentUser } from "@clerk/nextjs";
+'use server';
+import { Quiz } from '@/types/custom';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { createClient } from '@/utils/supabase/server';
+import { currentUser } from '@clerk/nextjs';
 
 export async function addQuiz(quiz: string) {
   const supabase = createClient();
   const contentObject = JSON.parse(quiz);
   const user = await currentUser();
   if (!user) {
-    throw new Error("User is not logged in");
+    throw new Error('User is not logged in');
   }
 
   const { data: writer, error: userError } = await supabase
-    .from("user")
-    .select("*")
-    .eq("userId", user.id)
+    .from('user')
+    .select('*')
+    .eq('userId', user.id)
     .single();
-  console.log(user.id)
-  const { error } = await supabase.from("content").insert({
+  console.log(user.id);
+  const { error } = await supabase.from('content').insert({
     user_id: writer!.uuid!,
     name: contentObject.name,
     contenttype: contentObject.contentType,
@@ -27,7 +27,7 @@ export async function addQuiz(quiz: string) {
 
   if (error) {
     console.log(error);
-    throw new Error("Error inserting quiz");
+    throw new Error('Error inserting quiz');
   }
 }
 
@@ -36,70 +36,70 @@ export async function deleteQuiz(id: number) {
   const user = await currentUser();
 
   if (!user) {
-    throw new Error("User is not logged in");
+    throw new Error('User is not logged in');
   }
 
   const { data: writer, error: userError } = await supabase
-    .from("user")
-    .select("*")
-    .eq("userId", user.id)
+    .from('user')
+    .select('*')
+    .eq('userId', user.id)
     .single();
 
-  const { error } = await supabase.from("content").delete().match({
+  const { error } = await supabase.from('content').delete().match({
     user_id: writer!.uuid!,
     id,
   });
 
   if (error) {
-    throw new Error("Error deleting quiz");
+    throw new Error('Error deleting quiz');
   }
 
-  revalidatePath("/quizzes");
+  revalidatePath('/quizzes');
 }
 
 export async function updateQuiz(quiz: Quiz) {
   const supabase = createClient();
   const user = await currentUser();
   if (!user) {
-    throw new Error("User is not logged in");
+    throw new Error('User is not logged in');
   }
 
   const { data: writer, error: userError } = await supabase
-    .from("user")
-    .select("*")
-    .eq("userId", user.id)
+    .from('user')
+    .select('*')
+    .eq('userId', user.id)
     .single();
 
-  const { error } = await supabase.from("content").update(quiz).match({
+  const { error } = await supabase.from('content').update(quiz).match({
     user_id: writer!.uuid,
     id: quiz.id,
   });
 
   if (error) {
-    throw new Error("Error updating quiz");
+    throw new Error('Error updating quiz');
   }
 
-  revalidatePath("/quizzes");
+  revalidatePath('/quizzes');
 }
 
 /**********
  * OPENAI
  **********/
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
 type notesInfo = {
   notes: string;
-  difficulty: "easy" | "medium" | "hard";
+  difficulty: 'easy' | 'medium' | 'hard';
 };
 export async function generateQuiz({ notes, difficulty }: notesInfo) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
   const response = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: 'gpt-4o',
     messages: [
       {
-        role: "system",
+        role: 'system',
         content: `You are tasked with creating a five question multiple choice quiz based on the provided notes.
         The quiz questions should be of ${difficulty} difficulty. The quiz will consist of traditional multiple choice
         answer as well as true and false. You need to return the quiz as a JSON.stringified string and nothing else. 
@@ -143,30 +143,40 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
         `,
       },
       {
-        role: "user",
+        role: 'user',
         content: notes,
       },
     ],
     temperature: 0.7,
     max_tokens: 1500,
     top_p: 1,
+    stream: true,
   });
-  return response;
+  let fullResponse = '';
+  for await (const chunk of response) {
+    if (chunk.choices[0].delta.content) {
+      fullResponse = fullResponse + chunk.choices[0].delta.content;
+      console.log(chunk.choices[0].delta.content);
+    }
+  }
+
+  return fullResponse;
 }
 
 export async function formSubmit(data: FormData) {
-  const text = data.get("notes") as string | null;
+  const text = data.get('notes') as string | null;
   if (!text) {
-    throw new Error("Text is required");
+    throw new Error('Text is required');
   }
   // send notes to chatgpt
   const response = await generateQuiz({
     notes: text,
-    difficulty: "hard",
+    difficulty: 'hard',
   });
 
   // get quiz
-  const quiz = response!.choices[0].message.content;
+  //const quiz = response!.choices[0].message.content;
+  const quiz = response;
   await addQuiz(quiz!);
-  revalidatePath("/quizzes");
+  revalidatePath('/quizzes');
 }
