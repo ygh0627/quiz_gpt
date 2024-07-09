@@ -10,6 +10,7 @@ export default async function Header() {
             <span className='font-bold text-xl'>QuizGPT</span>
           </a>
           <Link href='/quizzes'>Quizzes</Link>
+          <Link href='/flashcards'>Flashcards</Link>
         </nav>
         <div className='flex flex-1 items-center justify-end space-x-2'>
           <ThemeToggle />

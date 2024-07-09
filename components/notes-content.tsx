@@ -1,7 +1,9 @@
+'use client';
 import { useFormStatus } from 'react-dom';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface NotesContentProps {
   showSpinner: () => void;
@@ -14,6 +16,7 @@ export function NotesContent({ showSpinner }: NotesContentProps) {
       showSpinner();
     }
   }, [pending])
+  const pathname = usePathname();
   return (
     <>
       <Textarea
@@ -23,7 +26,7 @@ export function NotesContent({ showSpinner }: NotesContentProps) {
         placeholder='Paste your notes here...'
       />
       <Button disabled={pending} type='submit'>
-        Generate Quiz
+        Generate {pathname === '/quizzes' ? "Quiz" : "Flashcards"}
       </Button>
     </>
   );

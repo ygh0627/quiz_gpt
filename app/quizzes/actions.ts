@@ -156,14 +156,14 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
   for await (const chunk of response) {
     if (chunk.choices[0].delta.content) {
       fullResponse = fullResponse + chunk.choices[0].delta.content;
-      console.log(chunk.choices[0].delta.content);
+      //console.log(chunk.choices[0].delta.content);
     }
   }
 
   return fullResponse;
 }
 
-export async function formSubmit(data: FormData) {
+export async function quizFormSubmit(data: FormData) {
   const text = data.get('notes') as string | null;
   if (!text) {
     throw new Error('Text is required');

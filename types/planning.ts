@@ -11,7 +11,7 @@ export type Question = {
   hint: string;
 };
 
-type Flashcard = {
+export type FlashcardType = {
   id: string;
   front: string;
   back: string;
