@@ -4,16 +4,28 @@ import { QuizList } from '@/components/quiz-list';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/utils/supabase/server';
+import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 export default async function QuizzesPage() {
   const supabase = createClient();
+  const user = await currentUser();
+  if (!user) {
+    return redirect('/');
+  }
 
   const { data: content } = await supabase
     .from('content')
     .select('*')
     .eq('contenttype', 'quiz')
     .order('created_at', { ascending: false });
+
+  /*
+   const { data: content, error } = await supabase
+   .from('content')
+   .select('*')
+   .in('user_id', supabase.from('user').select('uuid'));
+   */
 
   return (
     <section className='p-3 pt-6 max-w-6xl w-full flex flex-col gap-4'>
@@ -22,7 +34,9 @@ export default async function QuizzesPage() {
       </h1>
       <Separator className='w-full' />
       <QuizList quizzes={content} />
-      <div>Sample notes for presentation demo:</div>
+      <div className='dark:bg-blue-500'>
+        Sample notes for presentation demo:
+      </div>
       <div>
         The solar system is a vast and intricate cosmic neighborhood centered
         around the Sun, a star located at its heart. It spans over 4.6 billion
