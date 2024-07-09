@@ -86,7 +86,6 @@ export async function updateQuiz(quiz: Quiz) {
  * OPENAI
  **********/
 import OpenAI from "openai";
-import { RefObject } from "react";
 
 type notesInfo = {
   notes: string;
@@ -105,11 +104,6 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
         The quiz questions should be of ${difficulty} difficulty. The quiz will consist of traditional multiple choice
         answer as well as true and false. You need to return the quiz as a JSON.stringified string and nothing else. 
         The template of the JSON is as follows:
-
-    return response;
-  } catch (error) {
-    console.error("Error generating quizzes:", error);
-  }
         {
           name: string; 
           contentType: string;
