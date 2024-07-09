@@ -158,8 +158,6 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
     return response;
   } catch (error) {
     console.error("Error generating quizzes:", error);
-
-    return { error: "Failed to generate quiz", details: error };
   }
 }
 
@@ -175,7 +173,7 @@ export async function formSubmit(data: FormData) {
   });
 
   // get quiz
-  const quiz = response.choices[0].message.content;
+  const quiz = response!.choices[0].message.content;
   await addQuiz(quiz!);
   revalidatePath("/quizzes");
 }
