@@ -96,7 +96,7 @@ export async function generateQuiz({ notes, difficulty }: notesInfo) {
     apiKey: process.env.OPENAI_API_KEY,
   });
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: 'gpt-3.5-turbo',
     messages: [
       {
         role: 'system',
