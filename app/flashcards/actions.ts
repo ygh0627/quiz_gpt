@@ -65,10 +65,14 @@ import OpenAI from 'openai';
 type notesInfo = {
   notes: string;
   numFlashcards: number;
-  difficulty: 'easy' | 'medium' | 'hard'
+  difficulty: 'easy' | 'medium' | 'hard';
 };
 
-export async function generateFlashcards({ notes, numFlashcards, difficulty }: notesInfo) {
+export async function generateFlashcards({
+  notes,
+  numFlashcards,
+  difficulty,
+}: notesInfo) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -107,7 +111,7 @@ export async function generateFlashcards({ notes, numFlashcards, difficulty }: n
 
         Make sure the JSON string you return is exactly in accordance with the example string. Make sure to double quote 
         every field correctly. The JSON should have ABSOLUTELY ZERO ERRORS. MAKE SURE IT IS CORRECT. Also make sure the
-        returned string is under 1500 tokens in length.
+        returned string is under 2000 tokens in length.
         `,
       },
       {
@@ -116,7 +120,7 @@ export async function generateFlashcards({ notes, numFlashcards, difficulty }: n
       },
     ],
     temperature: 0.7,
-    max_tokens: 1500,
+    max_tokens: 3000,
     top_p: 1,
     stream: true,
   });
@@ -132,11 +136,15 @@ export async function generateFlashcards({ notes, numFlashcards, difficulty }: n
 }
 
 type flashcardFormSubmitType = {
-  data: FormData,
-  difficulty: 'easy' | 'medium' | 'hard',
-  numFlashcards: number,
-}
-export async function flashcardFormSubmit({data, numFlashcards, difficulty}: flashcardFormSubmitType) {
+  data: FormData;
+  difficulty: 'easy' | 'medium' | 'hard';
+  numFlashcards: number;
+};
+export async function flashcardFormSubmit({
+  data,
+  numFlashcards,
+  difficulty,
+}: flashcardFormSubmitType) {
   const text = data.get('notes') as string | null;
   if (!text) {
     throw new Error('Text is required');
@@ -145,7 +153,7 @@ export async function flashcardFormSubmit({data, numFlashcards, difficulty}: fla
   const response = await generateFlashcards({
     notes: text,
     numFlashcards: numFlashcards,
-    difficulty: difficulty
+    difficulty: difficulty,
   });
 
   // get quiz

@@ -145,7 +145,7 @@ export async function generateQuiz({
 
         Make sure the JSON string you return is exactly in accordance with the example string. Make sure to double quote 
         every field correctly. The JSON should have ABSOLUTELY ZERO ERRORS. MAKE SURE IT IS CORRECT. Also make sure the
-        returned string is under 1500 tokens in length.
+        returned string is under 2500 tokens in length.
         `,
       },
       {
@@ -154,7 +154,7 @@ export async function generateQuiz({
       },
     ],
     temperature: 0.7,
-    max_tokens: 1500,
+    max_tokens: 3000,
     top_p: 1,
     stream: true,
   });
