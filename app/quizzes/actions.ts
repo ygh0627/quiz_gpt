@@ -6,6 +6,7 @@ import { currentUser } from '@clerk/nextjs';
 
 export async function addQuiz(quiz: string) {
   const supabase = createClient();
+  console.log(quiz);
   const contentObject = JSON.parse(quiz);
   const user = await currentUser();
   if (!user) {
@@ -144,7 +145,8 @@ export async function generateQuiz({
         "
 
         Make sure the JSON string you return is exactly in accordance with the example string. Make sure to double quote 
-        every field correctly. The JSON should have ABSOLUTELY ZERO ERRORS. MAKE SURE IT IS CORRECT. Also make sure the
+        every field correctly. The JSON should have ABSOLUTELY ZERO ERRORS. MAKE SURE IT IS CORRECT. DO NOT PUT JSON.STRINGIFY 
+        IN THE RETURNED ANSWER. IT SHOULD BE STRINGIFIED, NOT WRITTEN AS STRINGIFIED. Also make sure the
         returned string is under 2500 tokens in length.
         `,
       },

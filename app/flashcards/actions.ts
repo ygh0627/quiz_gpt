@@ -110,7 +110,8 @@ export async function generateFlashcards({
         "
 
         Make sure the JSON string you return is exactly in accordance with the example string. Make sure to double quote 
-        every field correctly. The JSON should have ABSOLUTELY ZERO ERRORS. MAKE SURE IT IS CORRECT. Also make sure the
+        every field correctly. The JSON should have ABSOLUTELY ZERO ERRORS. MAKE SURE IT IS CORRECT. DO NOT PUT JSON.STRINGIFY 
+        IN THE RETURNED ANSWER. IT SHOULD BE STRINGIFIED, NOT WRITTEN AS STRINGIFIED. Also make sure the
         returned string is under 2000 tokens in length.
         `,
       },
