@@ -86,13 +86,18 @@ export async function updateQuiz(quiz: Quiz) {
  * OPENAI
  **********/
 import OpenAI from 'openai';
+import { Question } from '@/types/planning';
 
 type notesInfo = {
   notes: string;
   difficulty: 'easy' | 'medium' | 'hard';
   numQuestions: number;
 };
-export async function generateQuiz({ notes, difficulty, numQuestions }: notesInfo) {
+export async function generateQuiz({
+  notes,
+  difficulty,
+  numQuestions,
+}: notesInfo) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -165,11 +170,15 @@ export async function generateQuiz({ notes, difficulty, numQuestions }: notesInf
 }
 
 type quizFormSubmitType = {
-  data: FormData,
-  difficulty: 'easy' | 'medium' | 'hard',
-  numQuestions: number,
-}
-export async function quizFormSubmit({data, difficulty, numQuestions}: quizFormSubmitType) {
+  data: FormData;
+  difficulty: 'easy' | 'medium' | 'hard';
+  numQuestions: number;
+};
+export async function quizFormSubmit({
+  data,
+  difficulty,
+  numQuestions,
+}: quizFormSubmitType) {
   const text = data.get('notes') as string | null;
   if (!text) {
     throw new Error('Text is required');
@@ -185,5 +194,38 @@ export async function quizFormSubmit({data, difficulty, numQuestions}: quizFormS
   //const quiz = response!.choices[0].message.content;
   const quiz = response;
   await addQuiz(quiz!);
+  revalidatePath('/quizzes');
+}
+
+export async function markQuestionCorrect(quizID: number, questionID: string) {
+  const supabase = createClient();
+  const user = await currentUser();
+  if (!user) {
+    throw new Error('User is not logged in');
+  }
+
+  const { data: content } = await supabase
+    .from('content')
+    .select('*')
+    .eq('contenttype', 'quiz')
+    .order('created_at', { ascending: false });
+  if (content === null) {
+    return;
+  }
+  console.log(user.id);
+  for (const quiz of content) {
+    if (quiz.id === quizID) {
+      const currentQuiz: Question[] = JSON.parse(quiz.content!);
+      for (const question of currentQuiz) {
+        if (question.id === questionID) {
+          question.isCorrect = true;
+          const { error } = await supabase
+            .from('content')
+            .update({ content: JSON.stringify(currentQuiz) })
+            .eq('id', quizID);
+        }
+      }
+    }
+  }
   revalidatePath('/quizzes');
 }

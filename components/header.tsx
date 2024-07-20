@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-export default async function Header() {
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  currentUser,
+} from '@clerk/nextjs';
+import { createClient } from '@/utils/supabase/client';
+export default function Header() {
   return (
     <header className='sticky top-0 z-10 w-full border-b border-border bg-white'>
       <div className='container flex items-center h-14'>
@@ -13,7 +20,6 @@ export default async function Header() {
           <Link href='/flashcards'>Flashcards</Link>
         </nav>
         <div className='flex flex-1 items-center justify-end space-x-2'>
-          <ThemeToggle />
           <UserButton afterSignOutUrl='/' />
         </div>
       </div>
