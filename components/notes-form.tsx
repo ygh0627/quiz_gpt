@@ -12,12 +12,16 @@ interface NotesFormProps {
   closeDialog: () => void; // Adjust the type based on the actual type of `closeDialog`
   showSpinner: () => void;
   hideSpinner: () => void;
+  difficulty: 'easy' | 'medium' | 'hard';
+  numQuestions: number;
 }
 
 export function NotesForm({
   closeDialog,
   showSpinner,
   hideSpinner,
+  difficulty,
+  numQuestions,
 }: NotesFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const pathname = usePathname();
@@ -29,9 +33,16 @@ export function NotesForm({
           className='flex gap-4'
           action={async (data) => {
             if (pathname === '/quizzes') {
-              await quizFormSubmit(data);
+              await quizFormSubmit({
+                data: data,
+                numQuestions: numQuestions,
+                difficulty: difficulty,
+              });
             } else if (pathname === '/flashcards') {
-              await flashcardFormSubmit(data);
+              await flashcardFormSubmit({
+                data: data,
+              numFlashcards: numQuestions,
+            difficulty: difficulty});
             }
             formRef.current?.reset();
             closeDialog();

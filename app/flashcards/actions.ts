@@ -65,18 +65,20 @@ import OpenAI from 'openai';
 type notesInfo = {
   notes: string;
   numFlashcards: number;
+  difficulty: 'easy' | 'medium' | 'hard'
 };
 
-export async function generateFlashcards({ notes, numFlashcards }: notesInfo) {
+export async function generateFlashcards({ notes, numFlashcards, difficulty }: notesInfo) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4o',
     messages: [
       {
         role: 'system',
-        content: `You are tasked with creating ${numFlashcards} flashcards based on the provided notes. The flashcards will consist
+        content: `You are tasked with creating ${numFlashcards} flashcards based on the provided notes. The flashcards 
+        should be of ${difficulty} difficulty. The flashcards will consist
         of a front and a back. You need to return the flashcards as a JSON.stringified string and nothing else. 
         The template of the JSON is as follows:
         {
@@ -129,7 +131,12 @@ export async function generateFlashcards({ notes, numFlashcards }: notesInfo) {
   return fullResponse;
 }
 
-export async function flashcardFormSubmit(data: FormData) {
+type flashcardFormSubmitType = {
+  data: FormData,
+  difficulty: 'easy' | 'medium' | 'hard',
+  numFlashcards: number,
+}
+export async function flashcardFormSubmit({data, numFlashcards, difficulty}: flashcardFormSubmitType) {
   const text = data.get('notes') as string | null;
   if (!text) {
     throw new Error('Text is required');
@@ -137,7 +144,8 @@ export async function flashcardFormSubmit(data: FormData) {
   // send notes to chatgpt
   const response = await generateFlashcards({
     notes: text,
-    numFlashcards: 5,
+    numFlashcards: numFlashcards,
+    difficulty: difficulty
   });
 
   // get quiz
